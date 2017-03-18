@@ -21,9 +21,9 @@ Use this plugin if Layering another animation on top of an existing pose is requ
   When using 'start,[animName]' nPose will start the single animation of name 'animName'.  To start multiple anims, use multiple LINKMSG lines.   
   
    The syntax is as follows:   
-    *  `LINKMSG|-218|%AVKEY%/stopAll`
-    *  `LINKMSG|-218|%AVKEY%/stop,[animName]`
-    *  `LINKMSG|-218|%AVKEY%/start,[animName]`   
+    *  `LINKMSG|-218|%AVKEY%/stopAll`   
+    *  `LINKMSG|-218|%AVKEY%/stop,[animName]`    
+    *  `LINKMSG|-218|%AVKEY%/start,[animName]`     
     
     
 
