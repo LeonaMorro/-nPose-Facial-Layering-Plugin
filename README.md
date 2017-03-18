@@ -10,9 +10,22 @@ Use this plugin if Layering another animation on top of an existing pose is requ
         
 2. Simply called Layering animations which could include a full animation or partial animation.  
   This type of layering does not automatically loop and will only loop if the animation is uploaded to SL as a looping one. Layering can also be used for Bento animations not intended to loop.  
-  This type of layering is associated with a seat however not with any specific pose.  
+  This type of layering is associated with Avatar however not with any specific pose.  
+    When using LINKMSG to call this function the Avatar will be the menu user.   
+    When using SATMSG/NOTSATMSG to call this function the Avatar will be who is seated where the MSG is associated with.   
   This type of layering must be specifically turned off by instructions.  
   Access layering via LINKMSG or SATMSG/NOTSATMSG.  
+  
+  When using 'stopAll' nPose will stop all layered animations currently imposed on this Avatar.   
+  When using 'stop,[animName] nPose will stop the single animation of name 'animName'.   
+  When using 'start,[animName]' nPose will start the single animation of name 'animName'.  To start multiple anims, use multiple LINKMSG lines.   
+  
+   The syntax is as follows:   
+    *  `LINKMSG|-218|%AVKEY%/stopAll`
+    *  `LINKMSG|-218|%AVKEY%/stop,[animName]`
+    *  `LINKMSG|-218|%AVKEY%/start,[animName]`   
+    
+    
 
 Documentation: https://github.com/nPoseTeam/nPose-Facial-Layering-Plugin  
 Support group: secondlife:///app/group/f61cb811-89c4-cec7-daa9-067b3f851f9a/about  
