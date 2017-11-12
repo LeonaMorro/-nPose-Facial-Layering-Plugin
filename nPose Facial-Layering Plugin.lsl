@@ -30,9 +30,9 @@ integer FacialEnable = 1;
 
 list SeatedAvs() {
     list avs = [];
-    integer n = llGetNumberOfPrims();
-    for(; n >= llGetObjectPrimCount(llGetKey()); --n) {
-        key id = llGetLinkKey(n);
+    integer index;
+    for(index=llGetNumberOfPrims(); index>=llGetObjectPrimCount(llGetKey()); --index) {
+        key id = llGetLinkKey(index);
         if(llGetAgentSize(id) != ZERO_VECTOR) {
             avs = [id] + avs;
         }
@@ -185,7 +185,7 @@ default {
             list optionsToSet = llParseStringKeepNulls(str, ["~","|"], []);
             integer length = llGetListLength(optionsToSet);
             integer index;
-            for(; index<length; ++index) {
+            for(index=0; index<length; ++index) {
                 list optionsItems = llParseString2List(llList2String(optionsToSet, index), ["="], []);
                 string optionItem = llToLower(llStringTrim(llList2String(optionsItems, 0), STRING_TRIM));
                 string optionString = llList2String(optionsItems, 1);
@@ -293,7 +293,7 @@ default {
                 //we have lost a sitter so find out who and remove them from the list.
                 integer n;
                 integer LaStop = llGetListLength(Lastanim)/2;
-                for(; n<LaStop; ++n) {
+                for(n=0; n<LaStop; ++n) {
                     if(AvLinkNum((key)llList2String(Lastanim, n*2)) == -1) {
                         integer index = llListFindList(AnimsList, [(key)llList2String(Lastanim, n*2)]);
                         if(index != -1) {
