@@ -17,7 +17,7 @@ integer GotFaceAnim = 0;
 integer Seatcount;
 
 integer OPTIONS = -240;
-integer SEAT_UPDATE = 35353;
+integer SEAT_UPDATE = 251;
 integer MENU_USAGE = 34334;
 list FaceTimes = [];
 list Slots;
@@ -30,9 +30,9 @@ integer FacialEnable = 1;
 
 list SeatedAvs() {
     list avs = [];
-    integer index;
-    for(index=llGetNumberOfPrims(); index>=llGetObjectPrimCount(llGetKey()); --index) {
-        key id = llGetLinkKey(index);
+    integer n;
+    for(n = llGetNumberOfPrims(); n >= llGetObjectPrimCount(llGetKey()); --n) {
+        key id = llGetLinkKey(n);
         if(llGetAgentSize(id) != ZERO_VECTOR) {
             avs = [id] + avs;
         }
@@ -132,21 +132,24 @@ default {
 //            llSay(0, "anim list:\n" + llList2CSV(llGetAnimationList(av)));
         }
         else if(num == SEAT_UPDATE){
-            list seatsavailable = llParseStringKeepNulls(str, ["^"], []);
-            str = "";
-            integer stop = llGetListLength(seatsavailable)/8;
             Slots = [];
+            list slotsList=llParseStringKeepNulls(str, ["^"], []);
+            str="";
+            integer slotsStride=(integer)llList2String(slotsList, 0);
+            integer preambleLength=(integer)llList2String(slotsList, 1);
+            slotsList=llDeleteSubList(slotsList, 0, preambleLength-1);
+            integer stop = llGetListLength(slotsList)/8;
             FaceTimes = [];
             GotFaceAnim = 0;
             for(Seatcount = 1; Seatcount <= stop; ++Seatcount) {
-                Slots = Slots + [llList2String(seatsavailable, (Seatcount-1)*8), (vector)llList2String(seatsavailable, (Seatcount-1)*8+1), 
-                        (rotation)llList2String(seatsavailable, (Seatcount-1)*8+2), llList2String(seatsavailable, (Seatcount-1)*8+3), 
-                        (key)llList2String(seatsavailable, (Seatcount-1)*8+4), llList2String(seatsavailable, (Seatcount-1)*8+5),
-                        llList2String(seatsavailable, (Seatcount-1)*8+6), llList2String(seatsavailable, (Seatcount-1)*8+7)];
-                if(llList2String(seatsavailable, (Seatcount-1)*8+3) != "") {
+                Slots = Slots + [llList2String(slotsList, (Seatcount-1)*slotsStride+2), (vector)llList2String(slotsList, (Seatcount-1)*slotsStride+3), 
+                        (rotation)llList2String(slotsList, (Seatcount-1)*slotsStride+4), llList2String(slotsList, (Seatcount-1)*slotsStride+5), 
+                        (key)llList2String(slotsList, (Seatcount-1)*slotsStride+8), llList2String(slotsList, (Seatcount-1)*slotsStride+5),
+                        llList2String(slotsList, (Seatcount-1)*slotsStride+6), llList2String(slotsList, (Seatcount-1)*slotsStride+7)];
+                if(llList2String(slotsList, (Seatcount-1)*slotsStride+3) != "") {
                     //we need a list consisting of sitter key followed by each face anim and the associated time of each
                     //put face anims for this slot in a list
-                    list faceanimsTemp = llParseString2List(llList2String(seatsavailable, (Seatcount-1)*8+3), ["~"], []); 
+                    list faceanimsTemp = llParseString2List(llList2String(slotsList, (Seatcount-1)*slotsStride+3), ["~"], []); 
                     integer facecount = llGetListLength(faceanimsTemp);   
                     list faces = []; 
                     integer nFace;
@@ -167,7 +170,7 @@ default {
                     }
                     GotFaceAnim=1;
                     //add sitter key and flag if timer defined followed by a stride 2 list containing face anim name and associated time
-                    FaceTimes += [(key)llList2String(seatsavailable, (Seatcount-1)*8+4), hasNewFaceTime, facecount] + faces;
+                    FaceTimes += [(key)llList2String(slotsList, (Seatcount-1)*8+4), hasNewFaceTime, facecount] + faces;
                 }
             }
             //we have our new list of AV's and positions so put them where they belong.  fire off the first seated AV and run time will do the rest.
