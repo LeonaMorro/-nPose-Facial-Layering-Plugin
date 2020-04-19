@@ -2,6 +2,8 @@
 Requires
 * nPose V4.00
 
+Click the [Releases](https://github.com/nPoseTeam/nPose-Facial-Layering-Plugin/releases) tag above for prior release version which support prior versions of nPose.
+
 Use this plugin if Layering another animation on top of an existing pose is required. There are two types of layering animations to consider:
 1. Facial animations which could include Bento joint animations.  
   This type of layering utilizes a built in looping within the scripts.  
